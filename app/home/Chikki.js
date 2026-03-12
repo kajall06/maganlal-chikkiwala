@@ -1,0 +1,148 @@
+"use client"
+
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { addToCart } from "@/store/slice/cartSlice"
+import { FaHeart } from "react-icons/fa";
+import { IoEyeSharp } from "react-icons/io5";
+import { IoAdd } from "react-icons/io5";
+import Link from "next/link"
+
+export default function Chikki() {
+  const [products, setProducts] = useState([])
+  const [toast, setToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState("")
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        "https://appy.trycatchtech.com/v3/maganlalchikki/product_list?category_id=1"
+      )
+      setProducts(res.data.slice(0, 8))
+    }
+    fetchData()
+  }, [])
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product))
+    setToastMessage(`${product.title} added to cart!`)
+    setToast(true)
+
+    setTimeout(() => {
+      setToast(false)
+    }, 2000)
+  }
+
+  return (
+    <>
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-20 right-5 bg-green-500 text-white px-5 py-3 rounded shadow-lg z-50 animate-slide-in">
+          {toastMessage}
+        </div>
+      )}
+
+      {/* Category Header */}
+      <div className="flex flex-col sm:flex-row justify-between bg-white border-t-2 border-[#e9597e] mb-8 rounded-t-sm mt-5">
+        <div>
+          <h3 className="text-base text-white uppercase bg-[#e9597e] px-6 py-3 m-0">
+            Chikki
+          </h3>
+        </div>
+
+        <div className="mt-3 sm:mt-0">
+          <ul className="flex flex-wrap gap-2 sm:gap-4 p-3">
+            <li className="text-[#e9597e]">Latest Products</li>
+            <li className="text-[#e9597e]">Best Selling</li>
+            <li className="text-[#e9597e]">Top Rating</li>
+            <li className="text-[#e9597e]">Featured Products</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Products */}
+      <div className="bg-[#f1f1f1]">
+        <div className="flex flex-col lg:flex-row mx-auto max-w-7xl px-4 gap-6">
+
+          {/* Left Banner */}
+          <div className="w-full lg:w-1/4 h-[350px] lg:h-[550px] mt-12">
+            <img src="/chikki.jpg" className="w-full h-full object-contain" />
+          </div>
+
+          {/* Product Grid */}
+          <div className="w-full lg:w-3/4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="group bg-white relative overflow-hidden shadow hover:shadow-lg"
+              >
+
+                <img
+                  src={Array.isArray(product.images) ? product.images[0] : product.images}
+                  className="w-full h-[180px] object-cover"
+                />
+
+                {/* Hover Buttons */}
+                <div className="absolute inset-0 flex justify-end items-start pt-3 pr-3 opacity-0 group-hover:opacity-100 transition duration-300">
+                  <div className="flex flex-col gap-2">
+
+                    {/* View */}
+                    <Link href={`/shop/chikki/${product.id}`}>
+                      <button className="bg-white px-3 py-2 text-sm shadow rounded">
+                       <IoEyeSharp/>
+                      </button>
+                    </Link>
+
+                    {/* Add */}
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="bg-red-500 text-white px-3 py-2 text-sm rounded"
+                    >
+                      <IoAdd/>
+                    </button>
+
+                    {/* Like */}
+                    <button className="bg-white px-3 py-2 shadow rounded">
+                     <FaHeart className="text-[red]"></FaHeart>
+                    </button>
+
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="mt-3 p-5">
+                  <h3 className="text-sm text-gray-700">{product.title}</h3>
+                  <div className="border-b border-red-500 my-2"></div>
+                  <p className="text-sm font-medium text-red-500">
+                    ₹{product.price}
+                  </p>
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .animate-slide-in {
+          animation: slideIn 0.3s ease-in-out forwards;
+        }
+        @keyframes slideIn {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </>
+  )
+}
