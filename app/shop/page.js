@@ -20,7 +20,8 @@ export default function ShopPage() {
   const categoryMap = {
     chikki: 1,
     fudge: 2,
-    diwali: 2
+    dryfruitroll:4,
+    namkeen:5
   }
 
   const category_id = categoryMap[category] || 1

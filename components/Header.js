@@ -66,16 +66,7 @@ export default function Header() {
           })}
 
           {/* Search */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-1 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm w-60"
-            />
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
-          </div>
+          
         </div>
 
         {/* Right Section: Login + Cart */}
@@ -141,19 +132,7 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Search input */}
-          <div className="mt-6">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 w-full text-sm"
-              />
-              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
-            </div>
-          </div>
+         
 
           {/* Login + Cart */}
           <div className="mt-6 flex items-center justify-between">

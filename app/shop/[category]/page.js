@@ -15,9 +15,10 @@ export default function CategoryPage({ params }) {
 
   // Map category names to category IDs
   const categoryMap = {
+      dryfruitroll:4,
     chikki: 1,
     fudge: 2,
-    diwali: 3
+    namkeen:5
   }
   const category_id = categoryMap[category.toLowerCase()] || 1
 

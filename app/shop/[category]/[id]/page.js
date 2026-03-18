@@ -9,9 +9,10 @@ export default async function ProductPage({ params }) {
  console.log(category)
   // Map category name to category_id
   const categoryMap = {
+      dryfruitroll:4,
     chikki: 1,
     fudge: 2,
-    diwali: 2,
+    namkeen:5
   }
   const category_id = categoryMap[category.toLowerCase()] || 1
 

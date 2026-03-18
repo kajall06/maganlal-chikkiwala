@@ -5,14 +5,13 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { addToCart } from "@/store/slice/cartSlice"
 import Link from "next/link"
-import { IoEyeSharp } from "react-icons/io5";
-import { IoAdd } from "react-icons/io5";
-import { FaHeart } from "react-icons/fa";
+import { IoEyeSharp, IoAdd } from "react-icons/io5"
 
 export default function Fudge() {
   const [products, setProducts] = useState([])
   const [toast, setToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
+  const [activeId, setActiveId] = useState(null) // ✅ NEW
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -72,13 +71,16 @@ export default function Fudge() {
             <img src="/fudge.jpg" className="w-full h-full object-contain" />
           </div>
 
-          {/* Products Grid */}
-          <div className="w-full lg:w-3/4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+          {/* ✅ Mobile = 1 column */}
+          <div className="w-full lg:w-3/4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
 
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group bg-white relative overflow-hidden shadow hover:shadow-lg"
+                onClick={() =>
+                  setActiveId(activeId === product.id ? null : product.id)
+                }
+                className="group bg-white relative overflow-hidden shadow hover:shadow-lg cursor-pointer"
               >
 
                 <img
@@ -87,28 +89,37 @@ export default function Fudge() {
                   className="w-full h-[180px] object-cover"
                 />
 
-                {/* Hover Buttons */}
-                <div className="absolute inset-0 flex justify-end items-start pt-3 pr-3 opacity-0 group-hover:opacity-100 transition duration-300">
+                {/* ✅ Tap + Hover */}
+                <div
+                  className={`absolute inset-0 flex justify-end items-start pt-3 pr-3 transition duration-300
+                  ${
+                    activeId === product.id
+                      ? "opacity-100"
+                      : "opacity-0"
+                  }
+                  lg:opacity-0 lg:group-hover:opacity-100`}
+                >
                   <div className="flex flex-col gap-2">
 
                     {/* View */}
                     <Link href={`/shop/diwali/${product.id}`}>
-                      <button className="bg-white px-3 py-2 text-sm shadow rounded">
-                        <IoEyeSharp/>
+                      <button
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-white px-3 py-2 text-sm shadow rounded"
+                      >
+                        <IoEyeSharp />
                       </button>
                     </Link>
 
                     {/* Add */}
                     <button
-                      onClick={() => handleAddToCart(product)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddToCart(product)
+                      }}
                       className="bg-red-500 text-white px-3 py-2 text-sm rounded"
                     >
-                      <IoAdd/>
-                    </button>
-
-                    {/* Like */}
-                    <button className="bg-white px-3 py-2 shadow rounded">
-                      <FaHeart className="text-[red]"/>
+                      <IoAdd />
                     </button>
 
                   </div>

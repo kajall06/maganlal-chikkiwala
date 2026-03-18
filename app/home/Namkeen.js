@@ -4,23 +4,24 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { addToCart } from "@/store/slice/cartSlice"
-import { IoEyeSharp, IoAdd } from "react-icons/io5"
 import Link from "next/link"
+import { IoEyeSharp, IoAdd } from "react-icons/io5"
 
-export default function Chikki() {
+export default function Namkeen() {
   const [products, setProducts] = useState([])
   const [toast, setToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
-  const [activeId, setActiveId] = useState(null) // for mobile tap
+  const [activeId, setActiveId] = useState(null) // ✅ NEW
   const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(
-        "https://appy.trycatchtech.com/v3/maganlalchikki/product_list?category_id=1"
+        "https://appy.trycatchtech.com/v3/maganlalchikki/product_list?category_id=5"
       )
       setProducts(res.data.slice(0, 8))
     }
+
     fetchData()
   }, [])
 
@@ -43,11 +44,11 @@ export default function Chikki() {
         </div>
       )}
 
-      {/* Category Header */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between bg-white border-t-2 border-[#e9597e] mb-8 rounded-t-sm mt-5">
         <div>
           <h3 className="text-base text-white uppercase bg-[#e9597e] px-6 py-3 m-0">
-            Chikki
+          Namkeen
           </h3>
         </div>
 
@@ -61,21 +62,26 @@ export default function Chikki() {
         </div>
       </div>
 
-      {/* Products */}
+      {/* Products Section */}
       <div className="bg-[#f1f1f1]">
         <div className="flex flex-col lg:flex-row mx-auto max-w-7xl px-4 gap-6">
 
           {/* Left Banner */}
           <div className="w-full lg:w-1/4 h-[350px] lg:h-[550px] mt-12">
-            <img src="/chikki.jpg" className="w-full h-full object-contain" />
+               {products.map((product) => (
+                <img
+                  src={Array.isArray(product.images) ? product.images: product.images}
+                  alt={product.title}
+                  className="w-full h-[180px] object-cover"
+                />
+               ))}
           </div>
 
-          {/* Product Grid */}
+          {/* ✅ Mobile = 1 column */}
           <div className="w-full lg:w-3/4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
 
-            {products.map((product) => (
-              <div
-                key={product.id}
+          {products.map((product, index) => (
+  <div key={product.id || index}
                 onClick={() =>
                   setActiveId(activeId === product.id ? null : product.id)
                 }
@@ -84,10 +90,11 @@ export default function Chikki() {
 
                 <img
                   src={Array.isArray(product.images) ? product.images[0] : product.images}
+                  alt={product.title}
                   className="w-full h-[180px] object-cover"
                 />
 
-                {/* Buttons */}
+                {/* ✅ Tap + Hover */}
                 <div
                   className={`absolute inset-0 flex justify-end items-start pt-3 pr-3 transition duration-300
                   ${
@@ -100,7 +107,7 @@ export default function Chikki() {
                   <div className="flex flex-col gap-2">
 
                     {/* View */}
-                    <Link href={`/shop/chikki/${product.id}`}>
+                    <Link href={`/shop/namkeen/${product.id}`}>
                       <button
                         onClick={(e) => e.stopPropagation()}
                         className="bg-white px-3 py-2 text-sm shadow rounded"
@@ -109,7 +116,7 @@ export default function Chikki() {
                       </button>
                     </Link>
 
-                    {/* Add to Cart */}
+                    {/* Add */}
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
@@ -139,6 +146,7 @@ export default function Chikki() {
         </div>
       </div>
 
+      {/* Animation */}
       <style jsx>{`
         .animate-slide-in {
           animation: slideIn 0.3s ease-in-out forwards;

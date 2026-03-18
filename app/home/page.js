@@ -5,6 +5,7 @@ import Carousel from "./Carousel"
 import Diwali from "./Diwali"
 import Chikki from "./Chikki"
 import Fudge from "./Fudge"
+import Namkeen from "./Namkeen"
 
 export default async function Page() {
   const res = await axios.get(
@@ -41,6 +42,7 @@ export default async function Page() {
       <Diwali />
       <Chikki />
       <Fudge />
+      <Namkeen/>
     </>
   )
 }
