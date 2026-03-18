@@ -48,7 +48,7 @@ export default function Fudge() {
       <div className="flex flex-col sm:flex-row justify-between bg-white border-t-2 border-[#e9597e] mb-8 rounded-t-sm mt-5">
         <div>
           <h3 className="text-base text-white uppercase bg-[#e9597e] px-6 py-3 m-0">
-            Diwali Hamper
+          Fudge
           </h3>
         </div>
 
